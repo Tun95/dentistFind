@@ -70,6 +70,10 @@ export default {
         gradient: "gradient 8s linear infinite",
         float: "float 3s ease-in-out infinite",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        shimmer: "shimmer 2s infinite",
+        "bar-load": "bar-load 0.6s ease-out",
+        "card-appear": "card-appear 0.5s ease-out",
+        "pulse-subtle": "pulse-subtle 2s ease-in-out infinite",
       },
       keyframes: {
         gradient: {
@@ -85,6 +89,34 @@ export default {
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% center" },
+          "100%": { backgroundPosition: "200% center" },
+        },
+        "bar-load": {
+          from: {
+            transform: "scaleY(0)",
+            transformOrigin: "bottom",
+          },
+          to: {
+            transform: "scaleY(1)",
+            transformOrigin: "bottom",
+          },
+        },
+        "card-appear": {
+          from: {
+            opacity: "0",
+            transform: "translateY(20px)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "pulse-subtle": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.8" },
         },
       },
       screens: {
@@ -102,10 +134,19 @@ export default {
         lg: "1200px",
       },
       transitionProperty: {
-        width: "width",
+        height: "height",
+        spacing: "margin, padding",
+        all: "all",
+        colors:
+          "color, background-color, border-color, text-decoration-color, fill, stroke",
         transform: "transform",
-        colors: "colors",
-        shadow: "shadow",
+        opacity: "opacity",
+        shadow: "box-shadow",
+        size: "width, height",
+      },
+      transitionDuration: {
+        2000: "2000ms",
+        3000: "3000ms",
       },
       fontFamily: {
         display: ["PP Mori", "sans-serif"],
