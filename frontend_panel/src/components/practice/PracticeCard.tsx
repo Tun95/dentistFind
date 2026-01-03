@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import {
   MapPin,
   Users,
@@ -13,10 +15,15 @@ import PracticeDetailModal from "./PracticeDetailModal";
 
 interface PracticeCardProps {
   practice: PracticeSummary;
+  index: number;
 }
 
-const PracticeCard: React.FC<PracticeCardProps> = ({ practice }) => {
+const PracticeCard: React.FC<PracticeCardProps> = ({ practice, index }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   const getStatus = (conversionRate: number): StatusType => {
     if (conversionRate >= 20) return "high-performer";
@@ -74,8 +81,21 @@ const PracticeCard: React.FC<PracticeCardProps> = ({ practice }) => {
 
   return (
     <>
-      <div
-        className={`group relative rounded-xl overflow-hidden border ${statusConfig.border} bg-white dark:bg-gray-800/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 cursor-pointer`}
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 30 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{
+          duration: 0.5,
+          delay: index * 0.1,
+          ease: "easeOut",
+        }}
+        whileHover={{
+          y: -4,
+          scale: 1.02,
+          transition: { duration: 0.2 },
+        }}
+        className={`group relative rounded-xl overflow-hidden border ${statusConfig.border} bg-white dark:bg-gray-800/50 backdrop-blur-sm shadow-lg hover:shadow-xl cursor-pointer`}
         onClick={() => setIsModalOpen(true)}
       >
         {/* Background Gradient */}
@@ -86,8 +106,13 @@ const PracticeCard: React.FC<PracticeCardProps> = ({ practice }) => {
         {/* Header */}
         <div className="relative p-5">
           <div className="flex items-start justify-between mb-4">
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors">
+            <motion.div
+              className="flex-1 min-w-0"
+              initial={{ opacity: 0, x: -10 }}
+              animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+              transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
+            >
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-300">
                 {practice.name}
               </h3>
               <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-600 dark:text-gray-300">
@@ -96,56 +121,110 @@ const PracticeCard: React.FC<PracticeCardProps> = ({ practice }) => {
                   {practice.city}, {practice.country}
                 </span>
               </div>
-            </div>
-            <div
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={
+                inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
+              }
+              transition={{ duration: 0.3, delay: index * 0.1 + 0.3 }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${statusConfig.bgColor} ${statusConfig.textColor} flex-shrink-0 ml-2`}
+              whileHover={{ scale: 1.05 }}
             >
               {statusConfig.icon}
               <span>{statusConfig.label}</span>
-            </div>
+            </motion.div>
           </div>
 
           {/* Key Metrics - Compact */}
           <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="text-center">
-              <div className="p-2 rounded-lg bg-accent-50 dark:bg-accent-900/20 mb-1.5">
-                <Users className="w-5 h-5 mx-auto text-accent-600 dark:text-accent-400" />
-              </div>
-              <p className="text-xl font-bold text-gray-900 dark:text-white">
-                {practice.newPatientsThisMonth}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Patients
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 mb-1.5">
-                <Calendar className="w-5 h-5 mx-auto text-blue-600 dark:text-blue-400" />
-              </div>
-              <p className="text-xl font-bold text-gray-900 dark:text-white">
-                {practice.appointmentRequests}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Requests
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className={`p-2 rounded-lg ${statusConfig.bgColor} mb-1.5`}>
-                <span className="text-lg font-bold mx-auto block leading-none">
-                  {practice.conversionRate}%
-                </span>
-              </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Conversion
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Rate</p>
-            </div>
+            {[
+              {
+                icon: Users,
+                value: practice.newPatientsThisMonth,
+                label: "Patients",
+                color: "accent",
+                delay: 0.1,
+              },
+              {
+                icon: Calendar,
+                value: practice.appointmentRequests,
+                label: "Requests",
+                color: "blue",
+                delay: 0.2,
+              },
+              {
+                icon: null,
+                value: `${practice.conversionRate}%`,
+                label: "Conversion Rate",
+                color: status,
+                delay: 0.3,
+              },
+            ].map((metric, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{
+                  duration: 0.4,
+                  delay: index * 0.1 + metric.delay,
+                  ease: "backOut",
+                }}
+                className="text-center"
+                whileHover={{ scale: 1.05 }}
+              >
+                <div
+                  className={`p-2 rounded-lg ${
+                    metric.color === "accent"
+                      ? "bg-accent-50 dark:bg-accent-900/20"
+                      : metric.color === "blue"
+                      ? "bg-blue-50 dark:bg-blue-900/20"
+                      : statusConfig.bgColor
+                  } mb-1.5`}
+                >
+                  {metric.icon ? (
+                    <metric.icon
+                      className={`w-5 h-5 mx-auto ${
+                        metric.color === "accent"
+                          ? "text-accent-600 dark:text-accent-400"
+                          : metric.color === "blue"
+                          ? "text-blue-600 dark:text-blue-400"
+                          : statusConfig.iconColor
+                      }`}
+                    />
+                  ) : (
+                    <span
+                      className={`text-lg font-bold mx-auto block leading-none ${
+                        status === "high-performer"
+                          ? "text-green-600 dark:text-green-400"
+                          : status === "at-risk"
+                          ? "text-red-600 dark:text-red-400"
+                          : "text-gray-600 dark:text-gray-400"
+                      }`}
+                    >
+                      {metric.value}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xl font-bold text-gray-900 dark:text-white">
+                  {metric.icon ? metric.value : ""}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  {metric.label}
+                </p>
+              </motion.div>
+            ))}
           </div>
 
           {/* Growth Indicator */}
-          <div className="mb-4">
+          <motion.div
+            initial={{ opacity: 0, width: 0 }}
+            animate={
+              inView ? { opacity: 1, width: "100%" } : { opacity: 0, width: 0 }
+            }
+            transition={{ duration: 0.6, delay: index * 0.1 + 0.4 }}
+            className="mb-4"
+          >
             <div className="flex items-center justify-between text-sm mb-1">
               <span className="text-gray-600 dark:text-gray-400">
                 Monthly Growth
@@ -162,19 +241,34 @@ const PracticeCard: React.FC<PracticeCardProps> = ({ practice }) => {
               </span>
             </div>
             <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-              <div
+              <motion.div
+                initial={{ width: 0 }}
+                animate={
+                  inView
+                    ? { width: `${Math.min(Math.abs(growth), 100)}%` }
+                    : { width: 0 }
+                }
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.1 + 0.5,
+                  ease: "easeOut",
+                }}
                 className={`h-full rounded-full ${
                   isGrowing
                     ? "bg-gradient-to-r from-green-500 to-emerald-400"
                     : "bg-gradient-to-r from-red-500 to-rose-400"
                 }`}
-                style={{ width: `${Math.min(Math.abs(growth), 100)}%` }}
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick Trend Preview */}
-          <div className="mb-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.4, delay: index * 0.1 + 0.6 }}
+            className="mb-4"
+          >
             <div className="flex items-center justify-between text-sm mb-2">
               <span className="text-gray-600 dark:text-gray-400">
                 6-Month Trend
@@ -184,41 +278,57 @@ const PracticeCard: React.FC<PracticeCardProps> = ({ practice }) => {
               </span>
             </div>
             <div className="flex items-end h-8 gap-1">
-              {practice.monthlyTrend.slice(-6).map((value, index) => {
+              {practice.monthlyTrend.slice(-6).map((value, i) => {
                 const max = Math.max(...practice.monthlyTrend);
                 const height = (value / max) * 24;
 
                 return (
-                  <div
-                    key={index}
+                  <motion.div
+                    key={i}
+                    initial={{ height: 0 }}
+                    animate={inView ? { height: `${height}px` } : { height: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.1 + 0.6 + i * 0.05,
+                      ease: "easeOut",
+                    }}
                     className="flex-1 flex flex-col items-center"
                   >
                     <div
-                      className={`w-full rounded-t-sm transition-all duration-300 ${
-                        index === 5
+                      className={`w-full rounded-t-sm ${
+                        i === 5
                           ? "bg-gradient-to-t from-accent-500 to-accent-400"
                           : "bg-gradient-to-t from-gray-300 to-gray-200 dark:from-gray-600 dark:to-gray-500"
                       }`}
                       style={{ height: `${height}px` }}
                     />
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
           {/* Action Footer */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.3, delay: index * 0.1 + 0.8 }}
+            className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700"
+          >
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Click for details
             </div>
-            <div className="flex items-center text-accent-600 dark:text-accent-400">
+            <motion.div
+              className="flex items-center text-accent-600 dark:text-accent-400"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
               <span className="text-sm font-medium">View Details</span>
-              <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Modal */}
       <PracticeDetailModal
