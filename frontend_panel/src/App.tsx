@@ -1,6 +1,6 @@
 // src/App.tsx
 import "./App.css";
-import HomeScreen from "./screens/HomeScreen";
+import HomeScreen from "./screens/homescreen/HomeScreen";
 
 function App() {
   return (
