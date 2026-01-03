@@ -1,0 +1,48 @@
+import { PracticeSummary } from "../types/practice.types";
+
+export const mockPractices: PracticeSummary[] = [
+  {
+    id: '1',
+    name: 'ATJ Smile Dental',
+    city: 'New York',
+    country: 'USA',
+    newPatientsThisMonth: 42,
+    appointmentRequests: 85,
+    conversionRate: 49.4,
+    monthlyTrend: [35, 38, 40, 39, 41, 42],
+    marketingSpend: 2500,
+  },
+  {
+    id: '2',
+    name: 'Josh Dental Care',
+    city: 'London',
+    country: 'UK',
+    newPatientsThisMonth: 28,
+    appointmentRequests: 60,
+    conversionRate: 46.7,
+    monthlyTrend: [25, 26, 24, 27, 26, 28],
+    showRate: 92,
+  },
+  {
+    id: '3',
+    name: 'Sunshine Auto Dentistry',
+    city: 'Sydney',
+    country: 'Australia',
+    newPatientsThisMonth: 15,
+    appointmentRequests: 35,
+    conversionRate: 42.9,
+    monthlyTrend: [12, 14, 13, 16, 14, 15],
+    marketingSpend: 1800,
+  },
+  {
+    id: '4',
+    name: 'Metro Dental Clinic',
+    city: 'Toronto',
+    country: 'Canada',
+    newPatientsThisMonth: 8,
+    appointmentRequests: 120,
+    conversionRate: 6.7,
+    monthlyTrend: [10, 12, 9, 11, 8, 8],
+    showRate: 85,
+  },
+];
