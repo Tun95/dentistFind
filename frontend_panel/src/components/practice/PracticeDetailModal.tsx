@@ -184,7 +184,7 @@ const PracticeDetailModal: React.FC<PracticeDetailModalProps> = ({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="flex items-start justify-between mb-8"
+                    className="flex items-start justify-between mb-8 flex-wrap gap-2"
                   >
                     <div>
                       <motion.h3
@@ -234,7 +234,7 @@ const PracticeDetailModal: React.FC<PracticeDetailModalProps> = ({
                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                       Performance Metrics
                     </h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-420px:grid-cols-1">
                       {[
                         {
                           icon: Users,

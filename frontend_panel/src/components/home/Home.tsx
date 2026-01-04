@@ -192,7 +192,7 @@ function Home() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="mb-10"
         >
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap 2">
             <motion.h2
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}

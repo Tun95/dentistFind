@@ -120,13 +120,6 @@ export default {
         },
       },
       screens: {
-        xs: "400px",
-        sm: "640px",
-        md: "768px",
-        lg: "1024px",
-        xl: "1280px",
-        "2xl": "1536px",
-
         "max-1200px": { max: "1200px" },
         "max-1045px": { max: "1045px" },
         "max-900px": { max: "900px" },
@@ -138,7 +131,7 @@ export default {
         "max-380px": { max: "380px" },
         "max-360px": { max: "360px" },
         "max-345px": { max: "345px" },
-        "max-xs": { max: "400px" },
+        lg: "1200px",
       },
       transitionProperty: {
         height: "height",
