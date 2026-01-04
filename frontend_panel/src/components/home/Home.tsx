@@ -226,23 +226,6 @@ function Home() {
           </motion.div>
         </motion.div>
 
-        {/* Footer Note */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="text-center text-gray-500 dark:text-gray-400 text-sm border-t border-gray-200 dark:border-gray-700 pt-8"
-        >
-          <p>Data refreshes automatically every 24 hours</p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="mt-1"
-          >
-            Last updated: Today, 11:45 AM
-          </motion.p>
-        </motion.div>
       </div>
     </div>
   );
