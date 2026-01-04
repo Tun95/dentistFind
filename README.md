@@ -80,3 +80,8 @@
 - Mock data instead of backend integration  
 - Focused on core animations over edge cases  
 - Prioritized desktop/mobile responsiveness over exhaustive screen sizes  
+
+
+## 🔗 Links 
+- **Demo Link**:  https://dentistfind.netlify.app
+- **GitHub Link**: https://github.com/Tun95/dentistFind
