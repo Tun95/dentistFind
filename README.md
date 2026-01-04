@@ -4,10 +4,10 @@
 
 ```
 # 1. Clone the repository
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/Tun95/dentistFind.git
 
 # 2. Navigate into the project directory
-cd your-repo
+cd frontend_panel
 
 # 3. Install dependencies
 npm install
